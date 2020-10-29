@@ -66,11 +66,34 @@ function simplify (data) {
   return transform(data.value, data.type)
 }
 
+function encodeUUID (string) {
+  const tokens = string.replace(/-/g, '').match(/.{1,4}/g)
+  const uuid = []
+  for (var token of tokens) {
+    uuid.push(parseInt(token, 16))
+  }
+  return uuid
+}
+
+function decodeUUID (intarray) {
+  let uuid = '';
+  for (var i = 0; i < 8; i++) {
+    const int = intarray[i]
+    uuid += int.toString(16)
+    if ([1, 2, 3, 4].includes(i)) {
+      uuid += '-'
+    }
+  }
+  return uuid
+}
+
 module.exports = {
   writeUncompressed,
   parseUncompressed,
   simplify,
   parse,
   proto,
-  protoLE
+  protoLE,
+  encodeUUID,
+  decodeUUID
 }
